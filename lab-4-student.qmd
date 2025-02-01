@@ -19,13 +19,15 @@ The data come to us from [TidyTuesday](https://github.com/rfordatascience/tidytu
 
 ```{r}
 #| label: setup
-#| messages: false
+#| message: false
+
 library(tidyverse)
 ```
 
 ```{r}
 #| label: load-data
-#| messages: false
+#| message: false
+#| results: hide
 
 childcare_costs <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-05-09/childcare_costs.csv')
 
@@ -121,6 +123,7 @@ The region with the lowest median full-time median weekly price for center-based
 
 ```{r}
 #| label: recreate-plot
+#| message: false
 
 ca_long_sorted <- ca_childcare |>
   select(mc_infant, mc_toddler, mc_preschool, study_year, region) |>
@@ -131,7 +134,10 @@ ca_long_sorted <- ca_childcare |>
                values_to = "median_full_price") |>
   mutate(care_type = factor(care_type, levels = c("mc_infant",
                                                   "mc_toddler",
-                                                  "mc_preschool")))
+                                                  "mc_preschool"),
+                            labels = c("Infant",
+                                       "Toddler",
+                                       "Preschool")))
 
 ca_long_sorted |>
   ggplot(mapping = aes(x = study_year,
@@ -158,6 +164,7 @@ ca_long_sorted |>
 
 ```{r}
 #| label: scatterplot-median-income-vs-childcare-cost
+#| message: false
 
 ca_childcare |>
   ggplot(mapping = aes(x = mcsa,
